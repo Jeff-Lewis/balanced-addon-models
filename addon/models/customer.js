@@ -139,7 +139,18 @@ var Customer = Model.extend({
     return this.get('is_identity_verified') ? 'verified' : 'unverified';
   }.property('is_identity_verified'),
 
-  getApiProperties: BK.propertiesGetter("address", "business_name", "dob_month", "dob_year", "ein", "email", "meta", "name", "phone", "source", "ssn_last4"),
+  getApiProperties: function() {
+    var a = this.getProperties("address", "business_name", "dob_month", "dob_year", "ein", "email", "meta", "name", "phone", "source", "ssn_last4");
+    if (Ember.isBlank(a.ein)) {
+      delete a.ein;
+    }
+
+    if (Ember.isBlank(a.ssn_last4)) {
+      delete a.ssn_last4;
+    }
+
+    return a;
+  },
 });
 
 export default Customer;
