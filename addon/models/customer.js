@@ -141,14 +141,15 @@ var Customer = Model.extend({
 
   getApiProperties: function() {
     var a = this.getProperties("address", "business_name", "dob_month", "dob_year", "ein", "email", "meta", "name", "phone", "source", "ssn_last4");
-    if (Ember.isBlank(a.ein)) {
-      delete a.ein;
-    }
+    var deleteIfBlank = function(fieldName) {
+      if (Ember.isBlank(a[fieldName])) {
+        delete a[fieldName];
+      }
+    };
 
-    if (Ember.isBlank(a.ssn_last4)) {
-      delete a.ssn_last4;
-    }
-
+    deleteIfBlank("ein");
+    deleteIfBlank("ssn_last4");
+    deleteIfBlank("email");
     return a;
   },
 });

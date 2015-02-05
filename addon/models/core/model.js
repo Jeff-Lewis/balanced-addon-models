@@ -44,7 +44,12 @@ var Model = Ember.Object.extend(EmberValidations.Mixin, {
     };
     var errorHandler = function(response) {
       var errorsHandler = self.getErrorsHandler();
-      errorsHandler.populateFromResponse(response);
+      if (response.responseJSON) {
+        errorsHandler.populateFromResponse(response.responseJSON);
+      }
+      else {
+        errorsHandler.populateFromResponse(response);
+      }
       self.set("isSaving", false);
       return Ember.RSVP.reject(self);
     };
