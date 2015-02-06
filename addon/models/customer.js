@@ -140,17 +140,20 @@ var Customer = Model.extend({
   }.property('is_identity_verified'),
 
   getApiProperties: function() {
-    var a = this.getProperties("address", "business_name", "dob_month", "dob_year", "ein", "email", "meta", "name", "phone", "source", "ssn_last4");
-    var deleteIfBlank = function(fieldName) {
-      if (Ember.isBlank(a[fieldName])) {
-        delete a[fieldName];
+    var properties = this.getProperties("address", "business_name", "dob_month", "dob_year", "ein", "email", "meta", "name", "phone", "source", "ssn_last4");
+    var deleteIfBlank = function(object, fieldName) {
+      if (Ember.isBlank(object[fieldName])) {
+        object[fieldName] = null;
       }
     };
 
-    deleteIfBlank("ein");
-    deleteIfBlank("ssn_last4");
-    deleteIfBlank("email");
-    return a;
+    deleteIfBlank(properties, "ein");
+    deleteIfBlank(properties, "ssn_last4");
+    deleteIfBlank(properties, "email");
+
+    deleteIfBlank(properties.address, "country_code");
+
+    return properties;
   },
 });
 
